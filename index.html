@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destroy Games Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --primary: #ff4d4d;
+            --bg-dark: #0a0a0c;
+            --card-bg: #121216;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+        .glass-nav {
+            background: rgba(10, 10, 12, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-buy {
+            background: #ffffff;
+            color: #000000;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-buy:hover {
+            background: #e5e5e5;
+            transform: scale(1.02);
+        }
+
+        .game-card:hover img {
+            transform: scale(1.05);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .news-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        .news-card:hover {
+            border-color: var(--primary);
+            background: rgba(255,77,77,0.03);
+        }
+        
+        .embedded-frame {
+            width: 100%;
+            height: 600px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #000;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Üst Navigasyon -->
+    <nav class="sticky top-0 z-50 glass-nav px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-10">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showHome()">
+                <div class="w-8 h-8 bg-red-600 rounded flex items-center justify-center">
+                    <i class="fas fa-skull text-white text-sm"></i>
+                </div>
+                <h1 class="text-xl font-orbitron font-bold tracking-tighter text-white">DESTROY <span class="text-red-500">GAMES</span></h1>
+            </div>
+            <div class="flex gap-8 text-xs font-bold uppercase tracking-wider text-gray-400">
+                <a href="javascript:void(0)" onclick="showHome()" class="hover:text-white transition">Mağaza</a>
+                <a href="javascript:void(0)" onclick="showNews()" class="hover:text-white transition">Haberler</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- İçerik Alanı -->
+    <div id="main-view" class="fade-in">
+        <!-- JS ile doldurulacak -->
+    </div>
+
+    <!-- Haber Detay Modalı -->
+    <div id="news-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6 bg-black/90 backdrop-blur-md">
+        <div class="relative glass-nav border border-white/10 max-w-2xl w-full p-8 rounded-3xl shadow-2xl">
+            <button onclick="closeNewsModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white transition">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div id="news-modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Alt Bilgi (Footer) -->
+    <footer class="mt-20 border-t border-white/5 py-16 px-10 bg-[#070708]">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-2">
+                <h4 class="font-orbitron font-bold text-lg mb-4">DESTROY <span class="text-red-500">GAMES</span></h4>
+                <p class="text-gray-500 text-sm max-w-md leading-relaxed">
+                    Destroy Games olarak en sağlam yazılımları ve oyunları sunmayı vaat ediyoruz.
+                </p>
+            </div>
+            <div 
+                <ul class="text-gray-500 text-sm space-y-2" 
+                </ul>
+            </div>
+            <div class="flex gap-4">
+                <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition"><i class="fab fa-discord"></i></a>
+                <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white/10 transition"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Oyun verileri
+        const games = [
+            { 
+                id: 1, 
+                title: 'Robalien', 
+                price: 0, 
+                category: 'Aksiyon, Bilim Kurgu', 
+                tagline: 'Robotik istilaya hazır mısın?',
+                description: 'Robalien, Dünyadan bir insanın uzaylılar tarafından uzaya kaçırılmasını ve kurtuluşu konu alıyor. Tüm uzaylı robotlardan kurtulabilmek senin elinde!  ',
+                img: 'https://images.unsplash.com/photo-1546561892-65bf811416b9?q=80&w=2070&auto=format&fit=crop',
+                screenshots: [
+                    '<a href="https://ibb.co/FbdSdnrk"><img src="https://i.ibb.co/TBNVNrfD/robalien-ingame.png" alt="robalien-ingame" border="0" /></a>',
+                    '<a href="https://ibb.co/YBym1bSS"><img src="https://i.ibb.co/MkGrt9HH/boss.png" alt="boss" border="0" /></a>'
+                ],
+                dev: 'Destroy Games',
+                pub: 'Destroy Studios',
+                release: '2023',
+                downloadUrl: 'https://drive.google.com/file/d/1gXHWUDHAJCDo9Q5HJuBkux8aRhCb0DjB/view?usp=sharing',
+                isEmbedded: false
+            },
+            { 
+                id: 2, 
+                title: 'KaraağaçOS', 
+                price: 0, 
+                category: 'İşletim Sistemi (BETA)', 
+                tagline: 'Güç, sadelik ve hız bir arada.',
+                description: 'KaraağaçOS sıradan bir oyun değil; Yeni bir dijital dünya. Şu an Beta aşamasında olan bu işletim sistemi, yüksek performans ve tam gizlilik vaat ediyor.',
+                img: 'https://images.unsplash.com/photo-1614332287897-cdc485fa562d?q=80&w=2070&auto=format&fit=crop',
+                screenshots: [
+                    'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'
+                ],
+                dev: 'Destroy Games',
+                pub: 'Destroy Studios',
+                release: 'BETA Sürecinde',
+                downloadUrl: 'https://drive.google.com/file/d/1n5I12lvcg8O-tF6TtBrYM48ETGuzS20M/view',
+                isEmbedded: false
+            },
+            { 
+                id: 3, 
+                title: 'Cold Files Early Access', 
+                price: 0, 
+                category: 'Dedektiflik, Gerilim', 
+                tagline: 'Bazı dosyalar asla kapanmamalıydı.',
+                description: 'Karanlık ve karlı bir şehir ve çözülmemiş cinayetler. Cold Files, seni ipuçlarını birleştirmeye ve gerçeği bulmaya zorluyor. Üşümeye hazır ol.',
+                img: 'https://i.ibb.co/cXctWQSb/coldfiles.png',
+                screenshots: [], 
+                dev: 'Destroy Games',
+                pub: 'Destroy Studios',
+                release: '27 Ocak 2026',
+                downloadUrl: 'https://drive.google.com/file/d/1i2zDpraKnHYHFjxWzt__CvC9GhWw3CR9/preview',
+                isEmbedde: false
+            }
+        ];
+
+        // Haber verileri
+        const news = [
+            {                id: 1, 
+                title: 'KaraağaçOS Beta Başvuruları Açıldı!', 
+                type: 'Yeni Çıkanlar', 
+                content: 'İşletim sistemleri dünyasını sarsacak olan KaraağaçOS için beta başvuruları başladı.',
+                fullText: 'KaraağaçOS Beta süreci resmi olarak başladı. Geleceğin altyapısına şimdi katılın.',
+                color: 'text-red-500',
+            },
+            { 
+                id: 2, 
+                title: 'Robalien Geliştirmesi Durduruldu',  
+                type: 'Güncelleme', 
+                content: 'Robalien oyunundan destekler çekildi.', 
+                fullText: 'Stratejik nedenlerden dolayı Robalien projesi süresiz olarak durdurulmuştur.',
+                color: 'text-blue-500',
+            },
+            { 
+                id: 3, 
+                title: 'Cold Files: Mobil Sürümü Duyuruldu', 
+                type: 'Yakında', 
+                content: 'Dedektiflik macerası çok yakında telefonlara taşınıyor.', 
+                fullText: 'Cold Files artık sadece PC’de kalmıyor. Yeni nesil telefon desteği ile Cold Files, bu yıl tüm cihazlar için tarayıcıdan oynanabilecek bir versiyonla geliyor!',
+                color: 'text-purple-500',
+
+            },
+            { 
+                id: 4, 
+                title: 'Cold Files: Beta Yayında!', 
+                type: 'Yeni Çıkanlar', 
+                content: 'Cold Files artık indirilebilir durumda! Hemen kütüphaneye göz atın.',
+                fullText: 'Merakla beklenen Cold Files dedektiflik macerası açık beta olarak sunuldu. Dosyaları çözmek için şimdi indirin.',
+                color: 'text-red-500',
+            }
+        ];
+
+        function showHome() {
+            const container = document.getElementById('main-view');
+            const heroGame = games[2];
+            
+            container.innerHTML = `
+                <header class="relative h-[60vh] flex items-end p-10 md:p-20 overflow-hidden cursor-pointer" onclick="showGame(${heroGame.id})">
+                    <img src="${heroGame.img}" class="absolute inset-0 w-full h-full object-cover" alt="Kahraman Görseli">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                    <div class="relative z-10 max-w-xl">
+                        <h2 class="text-5xl font-orbitron font-bold mb-4">${heroGame.title}</h2>
+                        <p class="text-gray-300 mb-6 font-medium">${heroGame.tagline}</p>
+                        <button class="bg-white text-black px-8 py-3 rounded font-bold uppercase text-xs hover:bg-gray-200 transition">İncele</button>
+                    </div>
+                </header>
+
+                <section class="px-10 md:px-20 py-16">
+                    <div class="flex justify-between items-center mb-8">
+                        <h3 class="text-2xl font-bold font-orbitron">Destroy <span class="text-red-500">Kütüphanesi</span></h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${games.map(game => `
+                            <div class="game-card group cursor-pointer" onclick="showGame(${game.id})">
+                                <div class="relative aspect-[3/4] overflow-hidden rounded-xl mb-3">
+                                    <img src="${game.img}" class="w-full h-full object-cover transition duration-500" alt="${game.title}">
+                                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition"></div>
+                                </div>
+                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-tighter">${game.category}</h4>
+                                <h5 class="text-lg font-bold mb-2">${game.title}</h5>
+                                <p class="text-green-500 font-bold uppercase text-sm tracking-widest">Ücretsiz</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
+            window.scrollTo(0, 0);
+        }
+
+        function showNews() {
+            const container = document.getElementById('main-view');
+            container.innerHTML = `
+                <div class="max-w-4xl mx-auto px-10 py-16">
+                    <h2 class="text-4xl font-orbitron font-bold mb-10 text-center">Haberler & <span class="text-red-500">Duyurular</span></h2>
+                    <div class="space-y-6">
+                        ${news.map(item => `
+                            <div class="news-card p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-start">
+                                <div class="bg-white/5 w-16 h-16 rounded-xl flex-shrink-0 flex items-center justify-center border border-white/5">
+                                    <i class="fas fa-bullhorn text-2xl ${item.color}"></i>
+                                </div>
+                                <div class="flex-grow w-full">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <span class="text-[10px] uppercase font-bold tracking-widest px-2 py-1 bg-white/5 rounded ${item.color}">${item.type}</span>
+                                    </div>
+                                    <h3 class="text-xl font-bold mb-2">${item.title}</h3>
+                                    <p class="text-gray-400 text-sm leading-relaxed">${item.content}</p>
+                                </div>
+                                <button onclick="openNewsModal(${item.id})" class="text-xs font-bold uppercase text-red-500 hover:text-red-400 transition self-end md:self-center border border-red-500/20 px-4 py-2 rounded-lg hover:bg-red-500/10 whitespace-nowrap">Devamı <i class="fas fa-arrow-right ml-1"></i></button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            window.scrollTo(0, 0);
+        }
+
+        function openNewsModal(id) {
+            const item = news.find(n => n.id === id);
+            const content = document.getElementById('news-modal-content');
+            content.innerHTML = `
+                <div class="mb-6">
+                    <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 bg-white/5 rounded ${item.color} border border-current">${item.type}</span>
+                </div>
+                <h3 class="text-3xl font-orbitron font-bold mb-6">${item.title}</h3>
+                <div class="bg-white/5 h-[1px] w-full mb-6"></div>
+                <p class="text-gray-300 text-lg leading-relaxed mb-8">${item.fullText || item.content}</p>
+                <div class="flex justify-end">
+                    <button onclick="closeNewsModal()" class="bg-white text-black px-6 py-2 rounded-lg font-bold text-sm hover:bg-gray-200 transition">Anladım</button>
+                </div>
+            `;
+            document.getElementById('news-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNewsModal() {
+            document.getElementById('news-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function showGame(id) {
+            const game = games.find(g => g.id === id);
+            const container = document.getElementById('main-view');
+            
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-10 py-12">
+                    <h1 class="text-4xl font-orbitron font-bold mb-8 uppercase tracking-tight">${game.title}</h1>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        <div class="lg:col-span-2">
+                            ${game.isEmbedded ? `
+                                <div id="game-preview-container" class="mb-8">
+                                    <iframe src="${game.downloadUrl}" class="embedded-frame shadow-2xl" allow="autoplay"></iframe>
+                                    <p class="text-xs text-gray-500 mt-3 text-center italic">İçerik doğrudan yukarıdaki pencere üzerinden erişilebilirdir.</p>
+                                </div>
+                            ` : `
+                                <div class="aspect-video rounded-3xl overflow-hidden mb-6 border border-white/5 shadow-2xl">
+                                    <img src="${game.img}" class="w-full h-full object-cover" alt="Ana Görsel">
+                                </div>
+                            `}
+                            
+                            <div class="grid grid-cols-2 gap-4 mb-10">
+                                ${game.screenshots.map(src => `
+                                    <div class="aspect-video rounded-2xl overflow-hidden border border-white/5">
+                                        <img src="${src}" class="w-full h-full object-cover hover:scale-105 transition duration-700" alt="Ekran Görüntüsü">
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="space-y-6">
+                                <h3 class="text-xl font-bold font-orbitron border-b border-white/10 pb-4">${game.id === 2 ? 'Sistem' : 'Oyun'} Hakkında</h3>
+                                <p class="text-gray-400 leading-relaxed text-lg">${game.description}</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="glass-nav p-8 rounded-3xl border border-white/10 sticky top-28 shadow-2xl">
+                                <div class="mb-8">
+                                    <span class="text-3xl font-bold text-green-500">ÜCRETSİZ</span>
+                                    ${game.id === 2 ? '<div class="text-xs text-red-500 font-bold mt-1">Açık Beta Süreci</div>' : ''}
+                                </div>
+                                
+                                ${!game.isEmbedded ? `
+                                    <a href="${game.downloadUrl}" class="block w-full text-center btn-buy py-4 rounded-xl font-bold uppercase text-xs mb-3 shadow-lg">
+                                        Hemen İndir
+                                    </a>
+                                ` : `
+                                    <div class="text-xs text-gray-400 font-bold mb-6 text-center py-2 bg-white/5 rounded-lg border border-white/5">
+                                        <i class="fas fa-check-circle text-green-500 mr-2"></i> DOSYA SİTEYE GÖMÜLDÜ
+                                    </div>
+                                `}
+
+                                <button class="w-full bg-white/5 border border-white/10 py-4 rounded-xl font-bold uppercase text-xs hover:bg-white/10 transition mb-6">
+                                    İstek Listesine Ekle
+                                </button>
+                                <div class="space-y-4 pt-6 border-t border-white/10 text-[10px] text-gray-500 uppercase font-bold tracking-widest">
+                                    <div class="flex justify-between"><span>Geliştirici</span><span class="text-white">${game.dev}</span></div>
+                                    <div class="flex justify-between"><span>Yayıncı</span><span class="text-white">${game.pub}</span></div>
+                                    <div class="flex justify-between"><span>Durum</span><span class="text-white">${game.release}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            window.scrollTo(0, 0);
+        }
+
+        window.onload = showHome;
+    </script>
+</body>
+</html>
